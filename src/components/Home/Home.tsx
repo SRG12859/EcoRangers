@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import React from 'react';
 
-const Home = ({uN}: any) => {
+const Home = ({uN, civilPt}: any) => {
   return (
     <SafeAreaView style={styles.supremeWrapper}>
       <View style={styles.navigationNT}>
@@ -23,7 +23,7 @@ const Home = ({uN}: any) => {
       </View>
       <View style={styles.mContent}>
         <Text style={styles.civilPtAdv}>Your Civilian Points</Text>
-        <Text style={styles.civilPtAdvNum}>10,00,00,00</Text>
+        <Text style={styles.civilPtAdvNum}>{civilPt}</Text>
       </View>
     </SafeAreaView>
   );

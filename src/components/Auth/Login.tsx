@@ -8,9 +8,8 @@ import {
   TouchableOpacity,
   View,
   Button,
-  ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 
 const Login = ({
   loginMsgStat,
@@ -23,6 +22,7 @@ const Login = ({
   setLoginMsg,
   navigation,
 }: any) => {
+  const [visibilePass, setVisiblePass] = useState(true);
   return (
     <SafeAreaView style={styles.supremeWrapper}>
       <View style={styles.navigationNT}>
@@ -45,6 +45,7 @@ const Login = ({
           </View>
           <View style={styles.pCoverWrapper}>
             <TextInput
+              secureTextEntry={!visibilePass}
               style={styles.passTxtInp}
               placeholder="Password"
               onChangeText={newText => setPasswordText(newText)}
@@ -54,12 +55,19 @@ const Login = ({
               style={styles.pShowBtnImgBtn}
               activeOpacity={1}
               onPress={() => {
-                console.log('Ok');
+                setVisiblePass(!visibilePass);
               }}>
-              <Image
-                style={styles.pShowBtnImg}
-                source={require('../../../assets/visibility_true.png')}
-              />
+              {visibilePass ? (
+                <Image
+                  style={styles.pShowBtnImg}
+                  source={require('../../../assets/visibility_true.png')}
+                />
+              ) : (
+                <Image
+                  style={styles.pShowBtnImg}
+                  source={require('../../../assets/visibility_false.png')}
+                />
+              )}
             </TouchableOpacity>
           </View>
           <View style={styles.btnWrapper}>
@@ -149,14 +157,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
-  },
-  AuthBtn: {
-    height: 50,
-    width: 150,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 50,
   },
   pShowBtnImgBtn: {
     marginLeft: 5,

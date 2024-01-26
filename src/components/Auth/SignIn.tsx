@@ -10,7 +10,7 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 
 const SignIn = ({
   signInMsgStat,
@@ -23,6 +23,7 @@ const SignIn = ({
   setSignInMsg,
   navigation,
 }: any) => {
+  const [visibilePass, setVisiblePass] = useState(true);
   return (
     <SafeAreaView style={styles.supremeWrapper}>
       <View style={styles.navigationNT}>
@@ -43,6 +44,7 @@ const SignIn = ({
           </View>
           <View style={styles.pCoverWrapper}>
             <TextInput
+              secureTextEntry={!visibilePass}
               style={styles.passTxtInp}
               placeholder="Password"
               onChangeText={newText => setPasswordText(newText)}
@@ -52,18 +54,26 @@ const SignIn = ({
               style={styles.pShowBtnImgBtn}
               activeOpacity={1}
               onPress={() => {
-                console.log('Ok');
+                setVisiblePass(!visibilePass);
               }}>
-              <Image
-                style={styles.pShowBtnImg}
-                source={require('../../../assets/visibility_true.png')}
-              />
+              {visibilePass ? (
+                <Image
+                  style={styles.pShowBtnImg}
+                  source={require('../../../assets/visibility_true.png')}
+                />
+              ) : (
+                <Image
+                  style={styles.pShowBtnImg}
+                  source={require('../../../assets/visibility_false.png')}
+                />
+              )}
             </TouchableOpacity>
           </View>
+
           <View style={styles.btnWrapper}>
             <Button
               onPress={() => {
-                console.log('Login');
+                console.log('SignIn');
               }}
               title="Sign In"
               color="#FF7A00"
@@ -147,14 +157,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
-  },
-  AuthBtn: {
-    height: 50,
-    width: 150,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 50,
   },
   pShowBtnImgBtn: {
     marginLeft: 5,

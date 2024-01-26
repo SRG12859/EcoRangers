@@ -15,10 +15,11 @@ import Auth from './src/components/Navigatiors/Auth';
 
 const App = () => {
   const [uN, setUN] = useState('EcoRanger');
+  const [civilPt, setCivilPt] = useState(100000);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   return (
-    //   <TabNav uN={uN} />
     <NavigationContainer>
-      <Auth />
+      {!isLoggedIn ? <Auth /> : <TabNav uN={uN} civilPt={civilPt} />}
     </NavigationContainer>
   );
 };

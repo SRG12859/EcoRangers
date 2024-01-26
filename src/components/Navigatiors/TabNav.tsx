@@ -8,12 +8,13 @@ import Reward from '../Reward/Reward';
 const Tab = createMaterialBottomTabNavigator();
 type Props = {
   uN: string;
+  civilPt: number;
 };
-const TabNav = ({uN}: Props) => {
+const TabNav = ({uN, civilPt}: Props) => {
   const [colorTB, setColorTB] = useState('');
   return (
     <Tab.Navigator
-      initialRouteName="Feed"
+      initialRouteName="Home"
       activeColor="#050505"
       inactiveColor="#3e2465"
       barStyle={{backgroundColor: '#D4FAFF'}}>
@@ -25,7 +26,7 @@ const TabNav = ({uN}: Props) => {
             <Image source={require('../../../assets/Home.png')} />
           ),
         }}>
-        {props => <Home {...props} uN={uN.toString()} />}
+        {props => <Home {...props} uN={uN.toString()} civilPt={civilPt} />}
       </Tab.Screen>
       <Tab.Screen
         name="Reward"

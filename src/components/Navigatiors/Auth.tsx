@@ -18,7 +18,7 @@ const Auth = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName="SignIn"
+      initialRouteName="LogIn"
       screenOptions={{
         headerShown: false,
       }}>
@@ -49,6 +49,8 @@ const Auth = () => {
         {props => (
           <SignIn
             {...props}
+            cnfPass={cnfPass}
+            setCnfPass={setCnfPass}
             signInMsgStat={signInMsgStat}
             setSignInMsgStat={setSignInMsgStat}
             setPasswordText={setPasswordText}
