@@ -16,10 +16,10 @@ import Auth from './src/components/Navigatiors/Auth';
 const App = () => {
   const [uN, setUN] = useState('EcoRanger');
   return (
-    // <NavigationContainer>
     //   <TabNav uN={uN} />
-    // </NavigationContainer>
-    <Auth />
+    <NavigationContainer>
+      <Auth />
+    </NavigationContainer>
   );
 };
 export default App;

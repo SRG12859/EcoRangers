@@ -73,7 +73,14 @@ const SignIn = ({
         </View>
       </View>
       <View style={styles.ChangeModeTxtWrapper}>
-        <Text style={styles.ChangeModeTxt}>Already have an account?</Text>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            console.log('Create an account');
+            navigation.push('LogIn');
+          }}>
+          <Text style={styles.ChangeModeTxt}>Already have an account?</Text>
+        </TouchableOpacity>
       </View>
       <View style={{marginTop: 10}}>
         <Text style={{color: signInMsgStat}}>{signInMsg}</Text>
