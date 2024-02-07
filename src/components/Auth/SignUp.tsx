@@ -1,31 +1,34 @@
+import {AuthContext} from '../../contexts/AuthProvider';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {
-  Alert,
   TextInput,
   Image,
-  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
   Button,
-  ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 
-const SignIn = ({
-  signInMsgStat,
-  setSignInMsgStat,
+const SignUp = ({
   setPasswordText,
   setUserNameText,
-  signInMsg,
   userNameText,
   passwordText,
-  setSignInMsg,
   navigation,
 }: any) => {
   const [visibilePass, setVisiblePass] = useState(true);
+  const {isLoading}: any = useContext(AuthContext);
   return (
-    <SafeAreaView style={styles.supremeWrapper}>
+    <KeyboardAvoidingView style={styles.supremeWrapper}>
+      <Spinner
+        visible={isLoading}
+        color="#FF9900"
+        overlayColor="rgba(255, 240, 218, 0.30)"
+        size={90}
+      />
       <View style={styles.navigationNT}>
         <Text style={styles.welcmText}>Hello, EcoRanger</Text>
       </View>
@@ -33,11 +36,12 @@ const SignIn = ({
         <Text style={styles.welcmTxtShowWrapperText}>Make an Account</Text>
       </View>
       <View style={styles.wrapper}>
-        <View style={styles.formWrapper}>
+        <View>
           <View>
             <TextInput
               style={styles.TxtInp}
               placeholder="Username"
+              placeholderTextColor="#050505"
               onChangeText={newText => setUserNameText(newText)}
               defaultValue={userNameText}
             />
@@ -45,8 +49,9 @@ const SignIn = ({
           <View style={styles.pCoverWrapper}>
             <TextInput
               secureTextEntry={!visibilePass}
-              style={styles.passTxtInp}
+              style={[styles.passTxtInp]}
               placeholder="Password"
+              placeholderTextColor="#050505"
               onChangeText={newText => setPasswordText(newText)}
               defaultValue={passwordText}
             />
@@ -73,7 +78,7 @@ const SignIn = ({
           <View style={styles.btnWrapper}>
             <Button
               onPress={() => {
-                console.log('SignIn');
+                console.log('SignUp');
               }}
               title="Sign In"
               color="#FF7A00"
@@ -92,19 +97,13 @@ const SignIn = ({
           <Text style={styles.ChangeModeTxt}>Already have an account?</Text>
         </TouchableOpacity>
       </View>
-      <View style={{marginTop: 10}}>
-        <Text style={{color: signInMsgStat}}>{signInMsg}</Text>
-      </View>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
-export default SignIn;
+export default SignUp;
 
 const styles = StyleSheet.create({
-  formWrapper: {
-    height: '40%',
-  },
   errHandler: {
     height: 'auto',
     justifyContent: 'center',
@@ -127,31 +126,30 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+
     alignItems: 'center',
-    alignContent: 'center',
+    // alignContent: 'center',
     backgroundColor: '#f5f5f5',
     padding: 20,
   },
   navigationNT: {
-    padding: 20,
+    padding: 10,
     backgroundColor: '#f5f5f5',
     display: 'flex',
     flexDirection: 'row',
     alignContent: 'space-around',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: '15%',
   },
   welcmText: {
     color: '#050505',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '900',
   },
   settings: {},
   supremeWrapper: {
     color: '#f5f5f5',
-    height: '100%',
+    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -190,7 +188,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   ChangeModeTxtWrapper: {
-    marginTop: 10,
+    marginTop: 0,
     marginLeft: 25,
   },
   ChangeModeTxt: {

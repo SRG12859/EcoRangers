@@ -1,30 +1,34 @@
 import {
-  Alert,
   TextInput,
   Image,
-  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
   Button,
+  KeyboardAvoidingView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
+import Spinner from 'react-native-loading-spinner-overlay';
+import {AuthContext} from '../../contexts/AuthProvider';
 
 const Login = ({
-  loginMsgStat,
-  setLoginMsgStat,
   setPasswordText,
   setUserNameText,
-  loginMsg,
   userNameText,
   passwordText,
-  setLoginMsg,
   navigation,
 }: any) => {
   const [visibilePass, setVisiblePass] = useState(true);
+  const {isLoading}: any = useContext(AuthContext);
   return (
-    <SafeAreaView style={styles.supremeWrapper}>
+    <KeyboardAvoidingView style={styles.supremeWrapper}>
+      <Spinner
+        visible={isLoading}
+        color="#FF9900"
+        overlayColor="rgba(255, 240, 218, 0.30)"
+        size={90}
+      />
       <View style={styles.navigationNT}>
         <Text style={styles.welcmText}>Hello, EcoRanger</Text>
       </View>
@@ -34,11 +38,12 @@ const Login = ({
         </Text>
       </View>
       <View style={styles.wrapper}>
-        <View style={styles.formWrapper}>
+        <View>
           <View>
             <TextInput
               style={styles.TxtInp}
               placeholder="Username"
+              placeholderTextColor="#050505"
               onChangeText={newText => setUserNameText(newText)}
               defaultValue={userNameText}
             />
@@ -48,6 +53,7 @@ const Login = ({
               secureTextEntry={!visibilePass}
               style={styles.passTxtInp}
               placeholder="Password"
+              placeholderTextColor="#050505"
               onChangeText={newText => setPasswordText(newText)}
               defaultValue={passwordText}
             />
@@ -92,19 +98,13 @@ const Login = ({
           <Text style={styles.ChangeModeTxt}>Create an Account?</Text>
         </TouchableOpacity>
       </View>
-      <View style={{marginTop: 10}}>
-        <Text style={{color: loginMsgStat}}>{loginMsg}</Text>
-      </View>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
 export default Login;
 
 const styles = StyleSheet.create({
-  formWrapper: {
-    height: '40%',
-  },
   errHandler: {
     height: 'auto',
     justifyContent: 'center',
@@ -134,18 +134,17 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   navigationNT: {
-    padding: 20,
+    padding: 10,
     backgroundColor: '#f5f5f5',
     display: 'flex',
     flexDirection: 'row',
     alignContent: 'space-around',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: '15%',
   },
   welcmText: {
     color: '#050505',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '900',
   },
   settings: {},
