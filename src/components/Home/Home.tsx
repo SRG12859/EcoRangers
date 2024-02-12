@@ -7,9 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
+import {AuthContext} from '../../contexts/AuthProvider';
 
-const Home = ({uN, civilPt}: any) => {
+const Home = () => {
+  const {uN, civilPt}: any = useContext(AuthContext);
   return (
     <SafeAreaView style={styles.supremeWrapper}>
       <View style={styles.navigationNT}>

@@ -4,13 +4,11 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import Home from '../Home/Home';
 import {Image} from 'react-native';
 import Reward from '../Reward/Reward';
+import Order from '../Orders/Order';
 
 const Tab = createMaterialBottomTabNavigator();
-type Props = {
-  uN: string;
-  civilPt: number;
-};
-const TabNav = ({uN, civilPt}: Props) => {
+
+const TabNav = () => {
   const [colorTB, setColorTB] = useState('');
   return (
     <Tab.Navigator
@@ -19,20 +17,30 @@ const TabNav = ({uN, civilPt}: Props) => {
       inactiveColor="#3e2465"
       barStyle={{backgroundColor: '#D4FAFF'}}>
       <Tab.Screen
+        component={Home}
         name="Home"
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: () => (
             <Image source={require('../../../assets/Home.png')} />
           ),
-        }}>
-        {props => <Home {...props} uN={uN.toString()} civilPt={civilPt} />}
-      </Tab.Screen>
+        }}
+      />
       <Tab.Screen
         name="Reward"
         component={Reward}
         options={{
           tabBarLabel: 'Reward',
+          tabBarIcon: ({color}) => (
+            <Image source={require('../../../assets/Reward.png')} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Orders"
+        component={Order}
+        options={{
+          tabBarLabel: 'Orders',
           tabBarIcon: ({color}) => (
             <Image source={require('../../../assets/Reward.png')} />
           ),

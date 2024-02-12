@@ -40,7 +40,7 @@ const SignUp = ({
           <View>
             <TextInput
               style={styles.TxtInp}
-              placeholder="Username"
+              placeholder="Email"
               placeholderTextColor="#050505"
               onChangeText={newText => setUserNameText(newText)}
               defaultValue={userNameText}
@@ -167,8 +167,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 10,
     borderRadius: 15,
+    color: '#050505',
   },
   passTxtInp: {
+    color: '#050505',
     backgroundColor: '#E7E7E7',
     height: 53,
     width: 270,

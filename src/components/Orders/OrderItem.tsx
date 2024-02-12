@@ -8,7 +8,7 @@ type RewardItemProps = {
   UiD: string;
 };
 
-const RewardItem = ({image, text, price, UiD}: RewardItemProps) => {
+const OrderItem = ({image, text, price, UiD}: RewardItemProps) => {
   console.log(image);
   return (
     <View style={styles.wrapper}>
@@ -39,7 +39,7 @@ const RewardItem = ({image, text, price, UiD}: RewardItemProps) => {
   );
 };
 
-export default RewardItem;
+export default OrderItem;
 
 const styles = StyleSheet.create({
   pImg: {

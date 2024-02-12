@@ -1,20 +1,24 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Login from '../Auth/Login';
 
 //Navigation
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import SignIn from '../Auth/SignIn';
+import SignIn from '../Auth/SignUp';
 
 const Stack = createNativeStackNavigator();
 
 const Auth = () => {
   const [userNameText, setUserNameText] = useState('');
+  useEffect(() => {
+    console.log(userNameText);
+
+    return () => {
+      console.log(userNameText);
+    };
+  }, [userNameText]);
+
   const [passwordText, setPasswordText] = useState('');
   const [cnfPass, setCnfPass] = useState('');
-  const [loginMsg, setLoginMsg] = useState('Be careful while entering Text');
-  const [loginMsgStat, setLoginMsgStat] = useState('#900009');
-  const [signInMsg, setSignInMsg] = useState('Be careful while entering Text');
-  const [signInMsgStat, setSignInMsgStat] = useState('#900009');
 
   return (
     <Stack.Navigator
@@ -30,14 +34,10 @@ const Auth = () => {
         {props => (
           <Login
             {...props}
-            loginMsgStat={loginMsgStat}
-            setLoginMsgStat={setLoginMsgStat}
             setPasswordText={setPasswordText}
             setUserNameText={setUserNameText}
-            loginMsg={loginMsg}
             userNameText={userNameText}
             passwordText={passwordText}
-            setLoginMsg={setLoginMsg}
           />
         )}
       </Stack.Screen>
@@ -51,14 +51,10 @@ const Auth = () => {
             {...props}
             cnfPass={cnfPass}
             setCnfPass={setCnfPass}
-            signInMsgStat={signInMsgStat}
-            setSignInMsgStat={setSignInMsgStat}
             setPasswordText={setPasswordText}
             setUserNameText={setUserNameText}
-            signInMsg={signInMsg}
             userNameText={userNameText}
             passwordText={passwordText}
-            setSignInMsg={setSignInMsg}
           />
         )}
       </Stack.Screen>

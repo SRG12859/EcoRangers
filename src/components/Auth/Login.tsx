@@ -20,15 +20,9 @@ const Login = ({
   navigation,
 }: any) => {
   const [visibilePass, setVisiblePass] = useState(true);
-  const {isLoading}: any = useContext(AuthContext);
+  const {isLoading, login}: any = useContext(AuthContext);
   return (
     <KeyboardAvoidingView style={styles.supremeWrapper}>
-      <Spinner
-        visible={isLoading}
-        color="#FF9900"
-        overlayColor="rgba(255, 240, 218, 0.30)"
-        size={90}
-      />
       <View style={styles.navigationNT}>
         <Text style={styles.welcmText}>Hello, EcoRanger</Text>
       </View>
@@ -42,9 +36,9 @@ const Login = ({
           <View>
             <TextInput
               style={styles.TxtInp}
-              placeholder="Username"
+              placeholder="Email"
               placeholderTextColor="#050505"
-              onChangeText={newText => setUserNameText(newText)}
+              onChangeText={nT => setUserNameText(nT)}
               defaultValue={userNameText}
             />
           </View>
@@ -79,7 +73,7 @@ const Login = ({
           <View style={styles.btnWrapper}>
             <Button
               onPress={() => {
-                console.log('Login');
+                login(userNameText, passwordText);
               }}
               title="Login"
               color="#FF7A00"
@@ -98,6 +92,12 @@ const Login = ({
           <Text style={styles.ChangeModeTxt}>Create an Account?</Text>
         </TouchableOpacity>
       </View>
+      <Spinner
+        visible={isLoading}
+        color="#FF9900"
+        overlayColor="rgba(255, 240, 218, 0.30)"
+        size={90}
+      />
     </KeyboardAvoidingView>
   );
 };
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
   },
   TxtInp: {
     backgroundColor: '#E7E7E7',
+    color: '#050505',
     height: 53,
     width: 310,
     marginTop: 20,
@@ -171,6 +172,7 @@ const styles = StyleSheet.create({
   },
   passTxtInp: {
     backgroundColor: '#E7E7E7',
+    color: '#050505',
     height: 53,
     width: 270,
     marginTop: 20,

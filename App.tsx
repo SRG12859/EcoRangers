@@ -1,28 +1,23 @@
-import {
-  Alert,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useState} from 'react';
-import Home from './src/components/Home/Home';
+import {StyleSheet} from 'react-native';
+import React, {useContext, useState} from 'react';
 import TabNav from './src/components/Navigatiors/TabNav';
 import {NavigationContainer} from '@react-navigation/native';
 import Auth from './src/components/Navigatiors/Auth';
+import {AuthContext, AuthProvider} from './src/contexts/AuthProvider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppMainNavigator from './src/components/Navigatiors/AppMainNavigator';
+import {RewardProvider} from './src/contexts/RewardProvider';
 
 const App = () => {
-  const [uN, setUN] = useState('EcoRanger');
-  const [civilPt, setCivilPt] = useState(100000);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
   return (
-    <NavigationContainer>
-      {!isLoggedIn ? <Auth /> : <TabNav uN={uN} civilPt={civilPt} />}
-    </NavigationContainer>
+    <AuthProvider>
+      <RewardProvider>
+        <NavigationContainer>
+          <AppMainNavigator />
+        </NavigationContainer>
+      </RewardProvider>
+    </AuthProvider>
   );
 };
 export default App;
-
 const styles = StyleSheet.create({});
