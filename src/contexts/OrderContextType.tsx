@@ -1,4 +1,6 @@
 export type OrderContextType = {
-  UiD: string;
-  price: number;
+  orderArray: Array<Object>;
+  fetchOrder: Function;
+  placeOrder: Function;
+  isLoading: boolean;
 };

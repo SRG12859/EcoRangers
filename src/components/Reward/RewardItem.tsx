@@ -1,5 +1,6 @@
 import {StyleSheet, Text, View, Image, Button} from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
+import {OrderContext} from '../../contexts/OrderProvider';
 
 type RewardItemProps = {
   image: string;
@@ -9,7 +10,7 @@ type RewardItemProps = {
 };
 
 const RewardItem = ({image, text, price, UiD}: RewardItemProps) => {
-  console.log(image);
+  const {placeOrder}: any = useContext(OrderContext);
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
@@ -30,7 +31,7 @@ const RewardItem = ({image, text, price, UiD}: RewardItemProps) => {
         <Button
           color={'#FF4D00'}
           onPress={() => {
-            console.log('Im Buying', UiD, Text);
+            placeOrder(UiD);
           }}
           title="Buy"
         />
