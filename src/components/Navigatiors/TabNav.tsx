@@ -5,6 +5,7 @@ import Home from '../Home/Home';
 import {Image} from 'react-native';
 import Reward from '../Reward/Reward';
 import Order from '../Orders/Order';
+import QrScanner from '../QrScanner/QrScanner';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -41,6 +42,16 @@ const TabNav = () => {
         component={Order}
         options={{
           tabBarLabel: 'Orders',
+          tabBarIcon: ({color}) => (
+            <Image source={require('../../../assets/Reward.png')} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="QrScanBag"
+        component={QrScanner}
+        options={{
+          tabBarLabel: 'Claim Bag',
           tabBarIcon: ({color}) => (
             <Image source={require('../../../assets/Reward.png')} />
           ),

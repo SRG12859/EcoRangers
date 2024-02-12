@@ -5,7 +5,7 @@ import Config from 'react-native-config';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {NativeEventEmitter, NativeModules} from 'react-native';
+import {Alert, NativeEventEmitter, NativeModules} from 'react-native';
 import Snackbar from 'react-native-snackbar';
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -13,10 +13,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 const BURL: string = Config.BURL!;
-const Axios = axios.create({
-  baseURL: `http://192.168.1.104:5000/api/auth`,
-  responseType: 'json',
-});
+
 export const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
   const [uN, setUN] = useState('EcoRanger');
   const [civilPt, setCivilPt] = useState(100000);
@@ -25,7 +22,11 @@ export const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorAuthMSG, setErrorAuthMSG] = useState('');
   const [AT, setAT] = useState('');
-
+  const Axios = axios.create({
+    baseURL: `http://192.168.1.104:5000/api/auth`,
+    responseType: 'json',
+  });
+  Axios.defaults.headers.common['authtoken'] = AT;
   let login = async (email: string, password: string) => {
     try {
       let req = await Axios({
@@ -148,9 +149,25 @@ export const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
       console.log(error);
     }
   };
+  let getUser = async () => {
+    try {
+      let req = await Axios.get('/getuser', {
+        headers: {
+          authtoken: String(AT),
+        },
+      });
+      setCivilPt(req.data.civilPt);
+      console.log(req);
+    } catch (error: any) {
+      console.log(error);
+      console.log(error.response);
+      Alert.alert(String(error));
+    }
+  };
 
   useEffect(() => {
     fetchAT();
+    getUser();
   }, []);
 
   return (

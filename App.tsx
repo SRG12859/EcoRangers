@@ -8,15 +8,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppMainNavigator from './src/components/Navigatiors/AppMainNavigator';
 import {RewardProvider} from './src/contexts/RewardProvider';
 import {OrderProvider} from './src/contexts/OrderProvider';
+import BagProvider from './src/contexts/BagProvider';
 
 const App = () => {
   return (
     <AuthProvider>
       <RewardProvider>
         <OrderProvider>
-          <NavigationContainer>
-            <AppMainNavigator />
-          </NavigationContainer>
+          <BagProvider>
+            <NavigationContainer>
+              <AppMainNavigator />
+            </NavigationContainer>
+          </BagProvider>
         </OrderProvider>
       </RewardProvider>
     </AuthProvider>

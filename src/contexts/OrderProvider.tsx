@@ -29,6 +29,7 @@ export const OrderProvider: FC<{children: ReactNode}> = ({children}) => {
   const [orderArray, setOrderArray] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const {AT}: any = useContext(AuthContext);
+  Axios.defaults.headers.common['authtoken'] = AT;
 
   const placeOrder = async (UiD: string) => {
     try {
