@@ -43,7 +43,7 @@ const TabNav = () => {
         options={{
           tabBarLabel: 'Orders',
           tabBarIcon: ({color}) => (
-            <Image source={require('../../../assets/Reward.png')} />
+            <Image source={require('../../../assets/orders.png')} />
           ),
         }}
       />
@@ -53,7 +53,7 @@ const TabNav = () => {
         options={{
           tabBarLabel: 'Claim Bag',
           tabBarIcon: ({color}) => (
-            <Image source={require('../../../assets/Reward.png')} />
+            <Image source={require('../../../assets/Qr.png')} />
           ),
         }}
       />

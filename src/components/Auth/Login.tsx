@@ -86,7 +86,6 @@ const Login = ({
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
-            console.log('Create an account');
             navigation.push('SignIn');
           }}>
           <Text style={styles.ChangeModeTxt}>Create an Account?</Text>

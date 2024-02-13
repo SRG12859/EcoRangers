@@ -2,6 +2,7 @@ import {createContext, FC, ReactNode, useEffect, useState} from 'react';
 import {RewardContextType} from './RewardContextType';
 import axios from 'axios';
 import Config from 'react-native-config';
+import {BURL} from '../../secrets';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -10,11 +11,6 @@ import Snackbar from 'react-native-snackbar';
 export const RewardContext = createContext<RewardContextType | undefined>(
   undefined,
 );
-const BURL: string = Config.BURL!;
-const Axios = axios.create({
-  baseURL: `http://192.168.1.104:5000/api/rewards`,
-  responseType: 'json',
-});
 
 export const RewardProvider: FC<{children: ReactNode}> = ({children}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +20,10 @@ export const RewardProvider: FC<{children: ReactNode}> = ({children}) => {
   const [UiD, setUiD] = useState('');
   const [price, setPrice] = useState('');
   const [title, setTitle] = useState('');
+  const Axios = axios.create({
+    baseURL: `${BURL}/api/rewards`,
+    responseType: 'json',
+  });
   const fetchReward = async () => {
     try {
       setIsLoading(true);
@@ -44,13 +44,8 @@ export const RewardProvider: FC<{children: ReactNode}> = ({children}) => {
     }
   };
 
-  useEffect(() => {
-    fetchReward();
-    console.log(rewardItems);
-  }, []);
-
   return (
-    <RewardContext.Provider value={{rewardItems, isLoading}}>
+    <RewardContext.Provider value={{rewardItems, isLoading, fetchReward}}>
       {children}
     </RewardContext.Provider>
   );

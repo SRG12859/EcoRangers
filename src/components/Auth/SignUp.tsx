@@ -20,7 +20,7 @@ const SignUp = ({
   navigation,
 }: any) => {
   const [visibilePass, setVisiblePass] = useState(true);
-  const {isLoading}: any = useContext(AuthContext);
+  const {isLoading, signup, uN}: any = useContext(AuthContext);
   return (
     <KeyboardAvoidingView style={styles.supremeWrapper}>
       <Spinner
@@ -30,7 +30,7 @@ const SignUp = ({
         size={90}
       />
       <View style={styles.navigationNT}>
-        <Text style={styles.welcmText}>Hello, EcoRanger</Text>
+        <Text style={styles.welcmText}>Hello, {uN}</Text>
       </View>
       <View style={styles.welcmTxtShowWrapper}>
         <Text style={styles.welcmTxtShowWrapperText}>Make an Account</Text>
@@ -78,7 +78,7 @@ const SignUp = ({
           <View style={styles.btnWrapper}>
             <Button
               onPress={() => {
-                console.log('SignUp');
+                signup(userNameText, passwordText);
               }}
               title="Sign In"
               color="#FF7A00"
@@ -91,7 +91,6 @@ const SignUp = ({
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
-            console.log('Create an account');
             navigation.push('LogIn');
           }}>
           <Text style={styles.ChangeModeTxt}>Already have an account?</Text>

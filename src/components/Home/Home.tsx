@@ -7,20 +7,29 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {AuthContext} from '../../contexts/AuthProvider';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const Home = () => {
-  const {uN, civilPt}: any = useContext(AuthContext);
+  const {uN, civilPt, isLoading, AT, getUser, logout}: any =
+    useContext(AuthContext);
+
   return (
     <SafeAreaView style={styles.supremeWrapper}>
+      <Spinner
+        visible={isLoading}
+        color="#FF9900"
+        overlayColor="rgba(255, 240, 218, 0.30)"
+        size={90}
+      />
       <View style={styles.navigationNT}>
         <Text style={styles.welcmText}>Hello, {uN}</Text>
         <TouchableOpacity
           activeOpacity={1}
           style={styles.settings}
-          onPress={() => Alert.alert('Open Setting')}>
-          <Image source={require('../../../assets/settings.png')} />
+          onPress={() => logout()}>
+          <Image source={require('../../../assets/logout.png')} />
         </TouchableOpacity>
       </View>
       <View style={styles.mContent}>

@@ -9,13 +9,6 @@ const Stack = createNativeStackNavigator();
 
 const Auth = () => {
   const [userNameText, setUserNameText] = useState('');
-  useEffect(() => {
-    console.log(userNameText);
-
-    return () => {
-      console.log(userNameText);
-    };
-  }, [userNameText]);
 
   const [passwordText, setPasswordText] = useState('');
   const [cnfPass, setCnfPass] = useState('');

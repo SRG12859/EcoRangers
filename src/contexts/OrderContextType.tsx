@@ -3,4 +3,5 @@ export type OrderContextType = {
   fetchOrder: Function;
   placeOrder: Function;
   isLoading: boolean;
+  fulfillOrder: Function;
 };

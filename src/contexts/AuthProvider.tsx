@@ -4,26 +4,24 @@ import axios from 'axios';
 import Config from 'react-native-config';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BURL} from '../../secrets';
 
-import {Alert, NativeEventEmitter, NativeModules} from 'react-native';
 import Snackbar from 'react-native-snackbar';
 
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined,
 );
 
-const BURL: string = Config.BURL!;
-
 export const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
-  const [uN, setUN] = useState('EcoRanger');
-  const [civilPt, setCivilPt] = useState(100000);
+  const [uN, setUN] = useState('EcoHelper');
+  const [civilPt, setCivilPt] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [JWT, setJWT] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorAuthMSG, setErrorAuthMSG] = useState('');
   const [AT, setAT] = useState('');
   const Axios = axios.create({
-    baseURL: `http://192.168.1.104:5000/api/auth`,
+    baseURL: `${BURL}/api/auth`,
     responseType: 'json',
   });
   Axios.defaults.headers.common['authtoken'] = AT;
@@ -37,17 +35,14 @@ export const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
           password,
         },
       });
-      setErrorAuthMSG('Logged on succesfully');
       Snackbar.show({
-        text: String(errorAuthMSG),
+        text: String('Logged on succesfully'),
         duration: Snackbar.LENGTH_LONG,
       });
 
       setJWT(req.data.authtoken);
       await AsyncStorage.setItem('at', JWT);
-      setUN('SG');
       setIsLoggedIn(true);
-      console.log(isLoggedIn);
     } catch (error: any) {
       setIsLoggedIn(false);
       console.log(error.response.data.success);
@@ -87,10 +82,9 @@ export const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
       await AsyncStorage.setItem('at', JWT);
 
       if (req.data.success) {
-        setErrorAuthMSG('Logged on succesfully');
         setJWT(req.data.authtoken);
         Snackbar.show({
-          text: String(errorAuthMSG),
+          text: String('Logged on succesfully'),
           duration: Snackbar.LENGTH_LONG,
         });
         await AsyncStorage.setItem('at', JWT);
@@ -100,20 +94,15 @@ export const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
       setIsLoggedIn(false);
       console.log(error.response.data.success);
       if (error.response.data.success == false) {
-        console.log('-----------------------------');
-        console.log('1');
         return Snackbar.show({
           text: String(error.response.data.text),
           duration: Snackbar.LENGTH_LONG,
         });
       } else if (error.response.data.errors.length === 0) {
-        console.log('-----------------------------');
-        console.log('2');
-        Snackbar.show({
+        return Snackbar.show({
           text: String(error.response.data.errors[0].msg),
           duration: Snackbar.LENGTH_LONG,
         });
-        // setErrorAuthMSG('');
       } else {
         return Snackbar.show({
           text: String(error.response.data.errors[0].msg),
@@ -126,9 +115,9 @@ export const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
     try {
       setIsLoggedIn(false);
       await AsyncStorage.removeItem('at');
-      Snackbar.show({
+      return Snackbar.show({
         text: String('Logged Off'),
-        duration: Snackbar.LENGTH_SHORT,
+        duration: Snackbar.LENGTH_LONG,
       });
     } catch (error) {
       setIsLoggedIn(false);
@@ -139,14 +128,23 @@ export const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
   const fetchAT = async () => {
     try {
       setIsLoading(true);
-      let at: any = await AsyncStorage.getItem('at');
+      let at: string = await AsyncStorage.getItem('at');
       setAT(at);
-      if (at) setIsLoggedIn(true);
 
       console.log(at);
+      if (!emptyStrC(AT)) {
+        setIsLoggedIn(true);
+        await getUser();
+      } else {
+        setIsLoggedIn(false);
+      }
       setIsLoading(false);
     } catch (error) {
       console.log(error);
+      return Snackbar.show({
+        text: 'Error Occured in fetchAT',
+        duration: Snackbar.LENGTH_LONG,
+      });
     }
   };
   let getUser = async () => {
@@ -161,14 +159,36 @@ export const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
     } catch (error: any) {
       console.log(error);
       console.log(error.response);
-      Alert.alert(String(error));
+      return Snackbar.show({
+        text: 'Error Occured in getUser',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }
+  };
+
+  const emptyStrC = (AT: string) => {
+    if (AT?.length === 0 || AT === null || AT === undefined) {
+      return true;
+    } else {
+      return false;
     }
   };
 
   useEffect(() => {
     fetchAT();
-    getUser();
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      getUser();
+    }
+
+    return () => {
+      if (isLoggedIn) {
+        getUser();
+      }
+    };
+  }, [AT]);
 
   return (
     <AuthContext.Provider
@@ -182,6 +202,7 @@ export const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
         isLoggedIn,
         civilPt,
         uN,
+        getUser,
       }}>
       {children}
     </AuthContext.Provider>

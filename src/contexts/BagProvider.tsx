@@ -8,29 +8,27 @@ import {
 } from 'react';
 import {BagContextType} from './BagContextType';
 import axios from 'axios';
+import {BURL} from '../../secrets';
 import Config from 'react-native-config';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import {Alert, NativeEventEmitter, NativeModules} from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {AuthContext} from './AuthProvider';
 
 export const BagContext = createContext<BagContextType | undefined>(undefined);
-const BURL: string = Config.BURL!;
-const Axios = axios.create({
-  baseURL: `http://192.168.1.104:5000/api/bags`,
-  responseType: 'json',
-});
 export const BagProvider: FC<{children: ReactNode}> = ({children}) => {
   const {AT}: any = useContext(AuthContext);
   const [qrScanData, setQrScanData] = useState('');
+  const BURL: string = Config.BURL!;
+  console.log(BURL);
+  const Axios = axios.create({
+    baseURL: `${BURL}/api/bags`,
+    responseType: 'json',
+  });
   useEffect(() => {
     console.log(qrScanData);
-    claimBag();
-    return () => {
-      console.log(qrScanData);
-    };
+    if (qrScanData !== null || qrScanData !== undefined || qrScanData !== '') {
+      claimBag();
+    }
   }, [qrScanData]);
   const claimBag = async () => {
     try {
@@ -49,7 +47,10 @@ export const BagProvider: FC<{children: ReactNode}> = ({children}) => {
       console.log(req);
       console.log(req.data);
     } catch (error: any) {
-      Alert.alert(String(error));
+      Snackbar.show({
+        text: 'error occured in claimBag',
+        duration: Snackbar.LENGTH_LONG,
+      });
     }
   };
 

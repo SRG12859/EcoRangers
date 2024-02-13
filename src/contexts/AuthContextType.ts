@@ -8,4 +8,5 @@ export type AuthContextType = {
   isLoggedIn: boolean;
   civilPt: number;
   uN: String;
+  getUser: Function;
 };

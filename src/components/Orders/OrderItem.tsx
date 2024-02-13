@@ -1,15 +1,18 @@
 import {StyleSheet, Text, View, Image, Button} from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
+import {OrderContext} from '../../contexts/OrderProvider';
 
-type RewardItemProps = {
+type OrderItemProps = {
   image: string;
   text: string;
   price: number;
   UiD: string;
+  BPiD: string;
+  PiD: string;
 };
 
-const OrderItem = ({image, text, price, UiD}: RewardItemProps) => {
-  console.log(image);
+const OrderItem = ({image, text, price, UiD, BPiD, PiD}: OrderItemProps) => {
+  const {fulfillOrder}: any = useContext(OrderContext);
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
@@ -27,12 +30,15 @@ const OrderItem = ({image, text, price, UiD}: RewardItemProps) => {
         </View>
       </View>
       <View>
+        <Text style={styles.PiDtext}>PiD - {PiD}</Text>
+      </View>
+      <View>
         <Button
           color={'#FF4D00'}
           onPress={() => {
-            console.log('Im Buying', UiD, Text);
+            fulfillOrder(PiD);
           }}
-          title="Buy"
+          title="Cancel"
         />
       </View>
     </View>
@@ -75,5 +81,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#D9D9D9',
     margin: 20,
     borderRadius: 25,
+  },
+  PiDtext: {
+    color: '#050505',
+    fontWeight: '900',
+    fontSize: 13,
+    textAlign: 'center',
+    padding: 5,
   },
 });

@@ -12,26 +12,24 @@ import Config from 'react-native-config';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {Alert, NativeEventEmitter, NativeModules} from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {AuthContext} from './AuthProvider';
+import {BURL} from '../../secrets';
 
 export const OrderContext = createContext<OrderContextType | undefined>(
   undefined,
 );
-const BURL: string = Config.BURL!;
-const Axios = axios.create({
-  baseURL: `http://192.168.1.104:5000/api/orders`,
-  responseType: 'json',
-});
 
 export const OrderProvider: FC<{children: ReactNode}> = ({children}) => {
   const [orderArray, setOrderArray] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const {AT}: any = useContext(AuthContext);
-  Axios.defaults.headers.common['authtoken'] = AT;
-
+  const {AT, getUser}: any = useContext(AuthContext);
+  const Axios = axios.create({
+    baseURL: `${BURL}/api/orders`,
+    responseType: 'json',
+  });
   const placeOrder = async (UiD: string) => {
+    setIsLoading(true);
     try {
       let req = await Axios.post(
         '/addOrder',
@@ -48,25 +46,71 @@ export const OrderProvider: FC<{children: ReactNode}> = ({children}) => {
 
       Snackbar.show({
         text: String('Order Placed!'),
-        duration: Snackbar.LENGTH_SHORT,
+        duration: Snackbar.LENGTH_LONG,
       });
+      getUser();
       //   orderArray.push(req.data.details)
     } catch (error: any) {
       console.log(error.response);
-      Alert.alert(String(error));
+      Snackbar.show({
+        text: 'Error Occured in addOrder',
+        duration: Snackbar.LENGTH_LONG,
+      });
     }
+    setIsLoading(false);
   };
-  let fetchOrder = () => {
+  let fetchOrder = async () => {
+    setIsLoading(true);
     try {
+      console.log(AT);
+      let req = await Axios.get('/fetchUOrder', {
+        headers: {
+          authtoken: String(AT),
+        },
+      });
+      console.log(req);
+      console.log(req.data);
+      setOrderArray(req.data.orderedItems);
+      console.log(orderArray);
     } catch (error) {
       console.log(error);
-      Alert.alert(String(error));
+      Snackbar.show({
+        text: 'Error Occured in fetchOrder',
+        duration: Snackbar.LENGTH_LONG,
+      });
     }
+    setIsLoading(false);
+  };
+
+  const fulfillOrder = async (PiD: string) => {
+    setIsLoading(true);
+    try {
+      let req = await Axios({
+        method: 'delete',
+        url: '/fulfilOrder',
+        data: {
+          PiD,
+        },
+      });
+
+      Snackbar.show({
+        text: 'Order Cancelled',
+        duration: Snackbar.LENGTH_LONG,
+      });
+
+      fetchOrder();
+    } catch (error) {
+      Snackbar.show({
+        text: 'Error Occured in Cancel Order',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }
+    setIsLoading(false);
   };
 
   return (
     <OrderContext.Provider
-      value={{orderArray, fetchOrder, placeOrder, isLoading}}>
+      value={{orderArray, fetchOrder, placeOrder, isLoading, fulfillOrder}}>
       {children}
     </OrderContext.Provider>
   );

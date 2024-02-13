@@ -8,13 +8,18 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import RewardItem from './RewardItem';
 import {RewardContext} from '../../contexts/RewardProvider';
 import Spinner from 'react-native-loading-spinner-overlay';
+import {AuthContext} from '../../contexts/AuthProvider';
 
 const Reward = () => {
-  const {isLoading, rewardItems}: any = useContext(RewardContext);
+  const {isLoading, rewardItems, fetchReward}: any = useContext(RewardContext);
+  const {uN, logout}: any = useContext(AuthContext);
+  useEffect(() => {
+    fetchReward();
+  }, []);
   return (
     <SafeAreaView style={styles.supremeWrapper}>
       <Spinner
@@ -24,12 +29,12 @@ const Reward = () => {
         size={90}
       />
       <View style={styles.navigationNT}>
-        <Text style={styles.welcmText}>Hello, EcoRanger</Text>
+        <Text style={styles.welcmText}>Hello, {uN}</Text>
         <TouchableOpacity
           activeOpacity={1}
           style={styles.settings}
-          onPress={() => Alert.alert('Open Setting')}>
-          <Image source={require('../../../assets/settings.png')} />
+          onPress={() => logout()}>
+          <Image source={require('../../../assets/logout.png')} />
         </TouchableOpacity>
       </View>
       <ScrollView>
