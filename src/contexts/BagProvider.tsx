@@ -8,7 +8,6 @@ import {
 } from 'react';
 import {BagContextType} from './BagContextType';
 import axios from 'axios';
-import {BURL} from '../../secrets';
 import Config from 'react-native-config';
 
 import Snackbar from 'react-native-snackbar';
@@ -18,10 +17,8 @@ export const BagContext = createContext<BagContextType | undefined>(undefined);
 export const BagProvider: FC<{children: ReactNode}> = ({children}) => {
   const {AT}: any = useContext(AuthContext);
   const [qrScanData, setQrScanData] = useState('');
-  const BURL: string = Config.BURL!;
-  console.log(BURL);
   const Axios = axios.create({
-    baseURL: `${BURL}/api/bags`,
+    baseURL: `${Config.BURL}/api/bags`,
     responseType: 'json',
   });
   useEffect(() => {

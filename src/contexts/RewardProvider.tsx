@@ -2,7 +2,6 @@ import {createContext, FC, ReactNode, useEffect, useState} from 'react';
 import {RewardContextType} from './RewardContextType';
 import axios from 'axios';
 import Config from 'react-native-config';
-import {BURL} from '../../secrets';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -21,7 +20,7 @@ export const RewardProvider: FC<{children: ReactNode}> = ({children}) => {
   const [price, setPrice] = useState('');
   const [title, setTitle] = useState('');
   const Axios = axios.create({
-    baseURL: `${BURL}/api/rewards`,
+    baseURL: `${Config.BURL}/api/rewards`,
     responseType: 'json',
   });
   const fetchReward = async () => {

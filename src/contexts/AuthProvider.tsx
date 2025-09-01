@@ -4,7 +4,6 @@ import axios from 'axios';
 import Config from 'react-native-config';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BURL} from '../../secrets';
 
 import Snackbar from 'react-native-snackbar';
 
@@ -21,7 +20,7 @@ export const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
   const [errorAuthMSG, setErrorAuthMSG] = useState('');
   const [AT, setAT] = useState('');
   const Axios = axios.create({
-    baseURL: `${BURL}/api/auth`,
+    baseURL: `${Config.BURL}/api/auth`,
     responseType: 'json',
   });
   Axios.defaults.headers.common['authtoken'] = AT;

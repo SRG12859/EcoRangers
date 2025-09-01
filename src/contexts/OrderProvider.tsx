@@ -14,7 +14,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Snackbar from 'react-native-snackbar';
 import {AuthContext} from './AuthProvider';
-import {BURL} from '../../secrets';
 
 export const OrderContext = createContext<OrderContextType | undefined>(
   undefined,
@@ -25,7 +24,7 @@ export const OrderProvider: FC<{children: ReactNode}> = ({children}) => {
   const [isLoading, setIsLoading] = useState(false);
   const {AT, getUser}: any = useContext(AuthContext);
   const Axios = axios.create({
-    baseURL: `${BURL}/api/orders`,
+    baseURL: `${Config.BURL}/api/orders`,
     responseType: 'json',
   });
   const placeOrder = async (UiD: string) => {
@@ -72,6 +71,7 @@ export const OrderProvider: FC<{children: ReactNode}> = ({children}) => {
       console.log(req.data);
       setOrderArray(req.data.orderedItems);
       console.log(orderArray);
+      getUser();
     } catch (error) {
       console.log(error);
       Snackbar.show({
